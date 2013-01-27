@@ -1,22 +1,29 @@
 <?php
 /*
-Plugin Name: SF Admin bar tools
-Plugin URI: http://www.screenfeed.fr/sf-abt/
-Description: Adds some small interesting tools to the admin bar for Developers
-Version: 1.0.1
-Author: GregLone
-Author URI: http://www.screenfeed.fr/greg/
-License: GPLv3
-Require: WordPress 3.3
+ * Plugin Name: SF Admin bar tools
+ * Plugin URI: http://scri.in/sf-abt2/
+ * Description: Adds some small interesting tools to the admin bar for developers
+ * Version: 2.1
+ * Author: GregLone
+ * Author URI: http://www.screenfeed.fr/greg/
+ * License: GPLv2+
+ * Text Domain: sf-abt
+ * Domain Path: /languages/
 */
 
+global $wp_version;
+if ( version_compare($wp_version, '3.1', '<') )
+	return;
+
+define( 'SF_ABT_PLUGIN_NAME',	'SF Admin Bar Tools' );
+define( 'SF_ABT_PAGE_NAME',		'sf_abt_config' );
 define( 'SF_ABT_FILE',			__FILE__ );
 define( 'SF_ABT_DIRNAME',		basename( dirname( SF_ABT_FILE ) ) );
-define( 'SF_ABT_PLUGIN_URL',	trailingslashit( WP_PLUGIN_URL ) . SF_ABT_DIRNAME );
-define( 'SF_ABT_PLUGIN_DIR',	trailingslashit( WP_PLUGIN_DIR ) . SF_ABT_DIRNAME );
+define( 'SF_ABT_PLUGIN_URL',	plugin_dir_url( SF_ABT_FILE ) );
+define( 'SF_ABT_PLUGIN_DIR',	plugin_dir_path( SF_ABT_FILE ) );
 
 /*-----------------------------------------------------------------------------------*/
-/* Lang support */
+/* !Language support =============================================================== */
 /*-----------------------------------------------------------------------------------*/
 
 add_action( 'init', 'sf_abt_lang_init' );
@@ -26,174 +33,210 @@ function sf_abt_lang_init() {
 
 
 /*-----------------------------------------------------------------------------------*/
-/* Custom Post Type : Archive intro */
+/* !Activation ===================================================================== */
 /*-----------------------------------------------------------------------------------*/
 
-add_action( 'add_admin_bar_menus', 'sf_abt_admin_bar_menus' );
-function sf_abt_admin_bar_menus() {
-	if ( !current_user_can('administrator') )
-		return;
-	add_action( 'admin_bar_menu', 'sf_abt_tools', 200 );
-}
+register_activation_hook( SF_ABT_FILE, 'sf_abt_activation' );
+function sf_abt_activation() {
+	$opts		= sf_abt_get_options();
+	$user_id	= get_current_user_id();
 
-function sf_abt_tools( $wp_admin_bar ) {
-	$wp_admin_bar->add_group( array(
-		'id'	=> 'sf-abt-tools',
-		'meta'	=> array(
-			'class' => 'ab-top-secondary',
-			),
-	) );
-
-	$wp_admin_bar->add_node( array(
-		'parent'=> 'sf-abt-tools',
-		'id'	=> 'sf-abt-perfs',
-		'title'	=> '<span class="hidden-when-small">'.sprintf(__('%1$s queries, %2$s s.', 'sf-abt'), get_num_queries(), timer_stop()).'</span>',
-		'href'	=> "#",
-		'meta'	=> array(
-			'tabindex'	=> '-1',
-			'title'		=> __("Hide/Unhide the admin bar", 'sf-abt'),
-			),
-	) );
-
-	$scrid		= is_admin() ? __("Fix/unfix admin menu", 'sf-abt') : '$wp_query';
-	$scridTitle	= is_admin() ? '' : __('Show $wp_query content', 'sf-abt');
-	$wp_admin_bar->add_node( array(
-		'parent'=> 'sf-abt-perfs',
-		'id'	=> 'sf-abt-menuWpQuery',
-		'title'	=> $scrid,
-		'href'	=> "#",
-		'meta'	=> array(
-			'tabindex'	=> '-1',
-			'title'		=> $scridTitle,
-			),
-	) );
-
-	if ( is_admin() ) {
-		$wp_admin_bar->add_node( array(
-			'parent'=> 'sf-abt-perfs',
-			'id'	=> 'sf-abt-scrid',
-			'title'	=> get_current_screen()->id,
-		) );
+	if ( !sf_abt_coworkers_have_admin($opts['coworkers']) && !in_array( $user_id, $opts['coworkers'] ) && current_user_can( 'administrator' ) ) {
+		$opts['coworkers'][] = $user_id;
+		update_option('_sf_abt', $opts);
 	}
 }
 
-add_action('admin_head',	'sf_abt_css', 999 );
-add_action('wp_head',		'sf_abt_css', 999 );
-function sf_abt_css() {
-	if ( !current_user_can('administrator') )
-		return; ?>
-	<style type="text/css" id="sf-adt-css">
-		.admin-bar-small #wpadminbar { min-width: 0; width: auto; left: auto; right: 0; opacity: .7; }
-		.admin-bar-small .ab-top-menu:not(#wp-admin-bar-sf-abt-tools), .admin-bar-small .hidden-when-small { display: none; }
-		.admin-bar-small #wpadminbar .quicklinks, .admin-bar-small #wpadminbar .quicklinks .ab-top-secondary>li#wp-admin-bar-sf-abt-perfs, .admin-bar-small #wpadminbar .quicklinks .ab-top-secondary>li#wp-admin-bar-sf-abt-perfs>a.ab-item { border-left: none; }
-		#wp-admin-bar-sf-abt-perfs.hover>.ab-item, #wp-admin-bar-sf-abt-perfs.hover>.ab-item span { color: #333; text-shadow: none; background: #fff!important; }
-		.admin-bar-small #wp-admin-bar-sf-abt-perfs>.ab-item:before { content: ''; width: 0; height: 0; border: solid 8px transparent; border-right-color: #ccc; border-left-width: 0; margin-top: 5px; position: absolute; }
-		.admin-bar-small #wp-admin-bar-sf-abt-perfs.hover>.ab-item:before { border-right-color: #373737; }
-		.admin-menu-fixed #adminmenuwrap { position: fixed; }
-		body.admin-bar-small #adminmenu { padding-top: 0; }
-		.admin-menu-fixed #collapse-menu:before, .admin-menu-fixed #collapse-menu:after { content: ""; display: table; }
-		.admin-menu-fixed #collapse-menu:after { clear: both; }
-		#sf-abt-pre-wrap { position: fixed; z-index: 1000; top: 0; right: 0; bottom: 0; left: 0; background: rgba(255,255,255,.5); cursor: pointer; }
-		pre#sf-abt-pre { position: absolute; top: 40px; right: 100px; bottom: 12px; left: 100px; background-color: #191919; border: solid 5px #ccc; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; padding: 6px 0; margin: 0; overflow: auto; cursor: text; -webkit-box-shadow: 0 0 6px 0 rgba(0,0,0,.6); -moz-box-shadow: 0 0 6px 0 rgba(0,0,0,.6); box-shadow: 0 0 6px 0 rgba(0,0,0,.6); }
-		h2#sf-abt-h2 { position: fixed; right: 120px; top: 50px; padding: 6px 20px 0 0; margin: 0; color: #00B5D5; cursor: pointer; }
-		code#sf-abt-code { display: block; background-image: -webkit-linear-gradient(rgba(255,255,255,.05) 50%, transparent 50%, transparent); background-image: -moz-linear-gradient(rgba(255,255,255,.05) 50%, transparent 50%, transparent); background-image: -ms-linear-gradient(rgba(255,255,255,.1) 50%, transparent 50%, transparent); background-image: -o-linear-gradient(rgba(255,255,255,.1) 50%, transparent 50%, transparent); background-image: linear-gradient(rgba(255,255,255,.05) 50%, transparent 50%, transparent); -webkit-background-size: 100% 36px ; -moz-background-size: 100% 36px ; background-size: 100% 36px; background-position: 0 1px; -webkit-tab-size: 4; -moz-tab-size: 4; -ms-tab-size: 4; -o-tab-size: 4; tab-size: 4; padding: 0 12px; margin: 0; font-size: 13px; line-height: 18px; font-family: Monaco, "Andale Mono", "Courier New", Courier, monospace; color: #ccc; }
-		.sf-abt-post-content { background: #373737; -webkit-border-radius: 10px; -moz-border-radius: 10px; border-radius: 10px; padding: 6px 12px; margin: 0 40px 0 90px; }
-		.sf-abt-post-content .sf-abt-post-content { padding: 0; margin: 0; }
-	</style>
-	<?php
-}
 
-add_action('admin_footer',	'sf_abt_js', 999);
-add_action('wp_footer',		'sf_abt_js', 999);
-function sf_abt_js() {
-	if ( !current_user_can('administrator') )
-		return; ?>
-	<script type="text/javascript" id="sf-adt-js">
-		jQuery(document).ready(function($){
-			var $body = $("body");
-			// Initial states
-			if(window.localStorage) {
-				if (localStorage.getItem('smallAdminBar'))		$body.addClass("admin-bar-small");
-				if (localStorage.getItem('fixedAdminMenu'))		$body.addClass("admin-menu-fixed");
-			}
-			// Retract admin bar
-			$body.on('click', '#wp-admin-bar-sf-abt-perfs>.ab-item', function(e){
-				if($body.hasClass('admin-bar-small')) {
-					$body.removeClass("admin-bar-small");
-					if(window.localStorage)		localStorage.removeItem('smallAdminBar');
-				} else {
-					$body.addClass("admin-bar-small");
-					if(window.localStorage)		localStorage.setItem('smallAdminBar', 1);
-				}
-				e.preventDefault();
-			});
-			// Fix the admin menu
-			if($body.hasClass('wp-admin')) {
-				$body.on('click', '#wp-admin-bar-sf-abt-menuWpQuery>.ab-item', function(e){
-					if($body.hasClass('admin-menu-fixed')) {
-						$body.removeClass("admin-menu-fixed");
-						if(window.localStorage)		localStorage.removeItem('fixedAdminMenu');
-					} else {
-						$body.addClass("admin-menu-fixed");
-						if(window.localStorage)		localStorage.setItem('fixedAdminMenu', 1);
-					}
-					e.preventDefault();
-				});
-			} else {
-				// Call $wp_query with ajax
-				var $preCont = $('#sf-abt-pre-cont');
-				$body.on('click', '#wp-admin-bar-sf-abt-menuWpQuery>.ab-item, #sf-abt-h2', function(e){
-					var sep = '?';
-					var pageUrl = window.location.href;
-					if(pageUrl.indexOf('#')!=-1)	pageUrl = pageUrl.split('#')[0];
-					if(pageUrl.indexOf('?')!=-1)	sep = '&';
-					$preCont.html('').load(pageUrl+sep+'_wpnonce=<?php echo wp_create_nonce('sf-abt_get-wp-query'); ?>&wp_query=<?php echo rand(0, 1000); ?> #sf-abt-pre-wrap');	console.log(pageUrl+sep+'_wpnonce=<?php echo wp_create_nonce('sf-abt_get-wp-query'); ?>&wp_query=<?php echo rand(0, 1000); ?> #sf-abt-pre-wrap');
-					e.preventDefault();
-				}).on('click', '#sf-abt-pre-wrap', function(e){		// Close the $wp_query lightbox
-					if (e.target===this) {
-						$(this).remove();
-						e.preventDefault();
-					}
-				});
-			}
-		});
-	</script>
-	<?php
-	if (is_admin())
+/*-----------------------------------------------------------------------------------*/
+/* !Init =========================================================================== */
+/*-----------------------------------------------------------------------------------*/
+
+add_action( 'plugins_loaded', 'sf_abt_include_cowork' );
+function sf_abt_include_cowork() {
+
+	if ( is_admin() && !defined('DOING_AJAX') )
+		include(SF_ABT_PLUGIN_DIR.'/inc/sf-abt-admin.inc.php');						// !Plugin page
+
+	$user_id = get_current_user_id();
+
+	if ( !sf_abt_is_autorized_coworker( $user_id ) )
 		return;
-	if (isset($_GET['wp_query']) && isset($_GET['_wpnonce']) && wp_verify_nonce($_GET['_wpnonce'], 'sf-abt_get-wp-query')) {
-		global $wp_query;
-		$sf_abt_q = '';
-		$sf_abt_q = $wp_query;
-		if ( isset($sf_abt_q->queried_object->post_content) )
-			$sf_abt_q->queried_object->post_content = '<div class="sf-abt-post-content">'.$sf_abt_q->queried_object->post_content.'</div>';
 
-		if ( isset($sf_abt_q->post->post_content) )
-			$sf_abt_q->post->post_content = '<div class="sf-abt-post-content">'.$sf_abt_q->post->post_content.'</div>';
+	if ( sf_abt_cowork_enabled( $user_id ) )
+		include(SF_ABT_PLUGIN_DIR.'/inc/sf-abt-cowork.inc.php');					// !Coworking nodes
 
-		if ( isset($sf_abt_q->posts) && count($sf_abt_q->posts) ) {
-			foreach ( $sf_abt_q->posts as $i => $sp_abt_p ) {
-				if ( isset($sp_abt_p->post_content) ) {
-					$sf_abt_q->posts[$i]->post_content = '<div class="sf-abt-post-content">'.$sf_abt_q->posts[$i]->post_content.'</div>';
-				}
-			}
-		}
+	if ( is_admin() ) {
 
-		if ( $sf_abt_q )
-			echo '<div id="sf-abt-pre-wrap"><pre id="sf-abt-pre"><h2 id="sf-abt-h2">$wp_query</h2><code id="sf-abt-code">'.print_r($sf_abt_q, true).'</code></pre></div>';
-	} else
-		echo '<div id="sf-abt-pre-cont"></div>';
+		if ( defined('DOING_AJAX') && DOING_AJAX )
+			include(SF_ABT_PLUGIN_DIR.'/inc/sf-abt-ajax.inc.php');					// !Coworking ajax requests
+		else
+			include(SF_ABT_PLUGIN_DIR.'/inc/sf-abt-admin-nodes.inc.php');			// !Admin nodes
+
+	}
+
+	include(SF_ABT_PLUGIN_DIR.'/inc/sf-abt.inc.php');
 }
 
 
+/*-----------------------------------------------------------------------------------*/
+/* !Utilities ====================================================================== */
+/*-----------------------------------------------------------------------------------*/
+
+// !Return sanitized option(s)
+function sf_abt_get_options( $name = false ) {
+	$default_options	= sf_abt_get_default();
+	$functions			= sf_abt_sanitization_functions();
+	$abt_options		= get_option( '_sf_abt' );
+	$abt_options		= is_array($abt_options) ? $abt_options : array();
+	$options			= array();
+
+	if ( $name )
+		return isset($abt_options[$name]) ? sf_abt_sanitize_option( $name, $abt_options[$name], $functions ) : $default_options[$name];
+
+	foreach( $default_options as $name => $def ) {
+		$options[$name] = isset($abt_options[$name]) ? sf_abt_sanitize_option( $name, $abt_options[$name], $functions ) : $def;
+	}
+	return $options;
+}
 
 
+// !Compat - Return an array of all coworkers
+function sf_abt_get_coworkers() {
+	return sf_abt_get_options( 'coworkers' );
+}
 
 
+// !Return default options
+function sf_abt_get_default( $option = false ) {
+	$default_options = array(
+		'coworkers' => array(),
+	);
+
+	$default_options = apply_filters( 'sf_abt_default_options', $default_options );
+
+	if ( $option )		// We request only one default option
+		return isset($default_theme_options[$option]) ? $default_theme_options[$option] : '';
+
+	return $default_options;
+}
 
 
+// !Return an array of functions for sanitization purpose
+function sf_abt_sanitization_functions( $option = false ) {
+	$functions = array(
+		'coworkers'	=> array( 'function' => 'wp_parse_id_list' ),		// key == 'function': will use call_user_func(). key == 'array_map': will use... array_map(). Use one OR the other for each option
+	);
+
+	$functions = apply_filters( 'sf_abt_sanitization_functions', $functions );
+
+	if ( $option )
+		return isset($functions[$option]) ? $functions[$option] : array( 'function' => 'esc_attr', 'array_map' => 'esc_attr' );
+
+	return $functions;
+}
 
 
+// !Return the sanitized option
+function sf_abt_sanitize_option( $name = '', $value = '', $functions = array() ) {
+	if ( !is_array($functions) || empty($functions) )
+		$functions = sf_abt_sanitization_functions();
+
+	if ( !is_array($value) && isset($functions[$name]['function']) )
+		return call_user_func($functions[$name]['function'], $value);
+	if ( is_array($value) && isset($functions[$name]['array_map']) )
+		return array_map($functions[$name]['array_map'], $value);
+	if ( isset($functions[$name]['function']) )
+		return call_user_func($functions[$name]['function'], $value);
+	if ( isset($functions[$name]['array_map']) )
+		return array_map($functions[$name]['array_map'], $value);
+	return esc_attr($value);
+}
 
 
+// !Sanitize and update options
+function sf_abt_update_options( $new_values = array() ) {
+	$options	= sf_abt_get_options();
+	$functions	= sf_abt_sanitization_functions();
 
+	foreach( $options as $name => $value ) {
+		$options[$name] = isset($new_values[$name]) ? sf_abt_sanitize_option( $name, $new_values[$name], $functions ) : $value;
+	}
+	update_option( '_sf_abt', $options );
+	return $options;
+}
+
+
+// !Return if a user is in the coworkers list
+function sf_abt_is_autorized_coworker( $id = 0 ) {
+	$id = $id ? $id : get_current_user_id();
+	$coworkers = sf_abt_get_options( 'coworkers' );
+	return in_array($id, $coworkers) && user_can($id, 'administrator');
+}
+
+
+// !Return if the coworkers list still contains an administrator
+function sf_abt_coworkers_have_admin( $list = array() ) {
+	if ( empty($list) ) {
+		$opts	= sf_abt_get_options();
+		if ( empty($opts['coworkers']) )
+			return false;
+		$list	= $opts['coworkers'];
+	}
+
+	foreach ( $list as $user ) {
+		if ( user_can($user, 'administrator') )
+			return true;
+	}
+	return false;
+}
+
+
+// !Return cowork open files
+function sf_abt_get_open_files() {
+	$open_files	= get_option('sf-abt-open-files');
+	$open_files	= is_array($open_files) ? $open_files : array();
+	$files		= array();
+
+	if ( count($open_files) ) {
+		foreach( $open_files as $file => $user ) {
+			$files[esc_attr($file)] = absint($user);
+		}
+	}
+	return $files;
+}
+
+
+// !Return if cowork is enabled for the user
+function sf_abt_cowork_enabled( $id = 0 ) {
+	$id = $id ? $id : get_current_user_id();
+	return (int) get_user_meta($id, 'sf-abt-coworking', true);
+}
+
+
+/*-----------------------------------------------------------------------------------*/
+/* !Tools ========================================================================== */
+/*-----------------------------------------------------------------------------------*/
+/*
+ * $var (mixed) variable to print out.
+ * $display (bool) When false (default), print a "display: none" in the <pre> style. This way, you'll have to manually remove it (with firebug or any other tool), so you don't bother other users.
+ * $display_for_non_logged_in (bool) When false (default), nothing will be printed for logged out users.
+ * ex:
+ * pre_print_r($var)      : printed only for logged in users, but hidden for everybody (remove the display:hidden by yourself in the page).
+ * pre_print_r($var, 1)   : printed only for logged in users, all logged in users can see the code.
+ * pre_print_r($var, 0, 1): printed for everybody (logged out users too), but hidden for everybody (remove the display:hidden by yourself in the page).
+ * pre_print_r($var, 1, 1): printed for everybody (logged out users too), all users can see the code.
+ */
+if ( !function_exists('pre_print_r') ) :
+function pre_print_r($var, $display = false, $display_for_non_logged_in = false) {
+	if ( !$display_for_non_logged_in && !( function_exists('is_user_logged_in') && is_user_logged_in() ) )
+		return;
+
+	echo '<pre style="background:rgb(34,34,34);line-height:19px;font-size:14px;color:#fff;text-shadow:none;font-family:monospace;padding:6px 10px;margin:2px;position:relative;z-index:10000;overflow:auto;'.((bool) $display ? '' : 'display:none;').'">';
+	if ( (is_string($var) && trim($var) === '') || $var === false || $var === null )
+		var_dump($var);
+	else
+		print_r($var);
+	echo '<div style="clear:both"></div></pre>';
+}
+endif;
