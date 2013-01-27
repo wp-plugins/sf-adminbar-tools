@@ -56,10 +56,10 @@ Check out [my blog post](http://www.screenfeed.fr/sf-abt2/) for more infos or ti
 
 1. The admin bar item displaying the number of queries in your page and the amount of time to generate the page.
 2. The admin bar retracted.
-3. The dropdown in the administration area.
+3. The dropdown with coworking enabled.
 4. The admin bar in front-end on a small screen.
 5. The hooks dropdowns.
-6. Coworking.
+6. Coworking: browse the files and indicate you're editing it.
 
 == Changelog ==
 
