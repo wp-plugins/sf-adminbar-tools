@@ -113,7 +113,7 @@ function sf_abt_coworkers_field($o) {
 	if ( $o['can_manage'] ) {
 
 		foreach( $o['admins'] as $admin ) {
-			echo "\t\t\t\t".'<label><input style="margin-top:-2px" type="checkbox" name="'.$o['prefix'].'[coworkers][]" value="'.$admin->ID.'"'.( in_array($admin->ID, $o['options']['coworkers']) ? ' checked="checked"' : '' ).'/> '.get_avatar($admin->ID, 16, '').' '.$admin->display_name."</label>\n";
+			echo "\t\t\t\t".'<label><input style="margin-top:-2px" type="checkbox" name="'.$o['prefix'].'[coworkers][]" value="'.$admin->ID.'"'.( in_array($admin->ID, $o['options']['coworkers']) ? ' checked="checked"' : '' ).'/> '.get_avatar($admin->ID, 16, '').' '.$admin->display_name."</label><br/>\n";
 		}
 
 	} else {
@@ -121,7 +121,7 @@ function sf_abt_coworkers_field($o) {
 		echo '<p>'.__("You want to use this plugin? You should ask one of those awesome people to join the dev team.", 'sf-abt').'</p>';
 		$coworkers = get_users( array( 'include' => $o['options']['coworkers'] ) );
 		foreach( $coworkers as $coworker ) {
-			echo "\t\t\t\t".'<a href="'.admin_url('user-edit.php?user_id='.$coworker->ID).'">'.get_avatar($coworker->ID, 16, '').' '.$coworker->display_name."</a>\n";
+			echo "\t\t\t\t".'<a href="'.admin_url('user-edit.php?user_id='.$coworker->ID).'">'.get_avatar($coworker->ID, 16, '').' '.$coworker->display_name."</a><br/>\n";
 		}
 
 	}

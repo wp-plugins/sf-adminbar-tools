@@ -3,7 +3,7 @@
  * Plugin Name: SF Admin bar tools
  * Plugin URI: http://scri.in/sf-abt2/
  * Description: Adds some small interesting tools to the admin bar for developers
- * Version: 2.1
+ * Version: 2.1.1
  * Author: GregLone
  * Author URI: http://www.screenfeed.fr/greg/
  * License: GPLv2+

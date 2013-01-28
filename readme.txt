@@ -63,6 +63,10 @@ Check out [my blog post](http://www.screenfeed.fr/sf-abt2/) for more infos or ti
 
 == Changelog ==
 
+= 2.1.1 =
+* 2013/01/26
+* Bugfix in settings page (a missing BR tag)
+
 = 2.1 =
 * 2013/01/26
 * New: Auto "subscribe" when the plugin is activated. No need to rush to the settings page after activation now.
