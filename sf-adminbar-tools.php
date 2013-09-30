@@ -6,7 +6,8 @@
  * Version: 2.1.1
  * Author: GregLone
  * Author URI: http://www.screenfeed.fr/greg/
- * License: GPLv2+
+ * License: GPLv3
+ * License URI: http://www.screenfeed.fr/gpl-v3.txt
  * Text Domain: sf-abt
  * Domain Path: /languages/
 */
@@ -240,3 +241,4 @@ function pre_print_r($var, $display = false, $display_for_non_logged_in = false)
 	echo '<div style="clear:both"></div></pre>';
 }
 endif;
+/**/
