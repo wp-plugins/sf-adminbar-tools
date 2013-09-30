@@ -12,6 +12,7 @@
  * Domain Path: /languages/
 */
 
+
 global $wp_version;
 if ( version_compare($wp_version, '3.1', '<') )
 	return;
@@ -241,4 +242,3 @@ function pre_print_r($var, $display = false, $display_for_non_logged_in = false)
 	echo '<div style="clear:both"></div></pre>';
 }
 endif;
-/**/
