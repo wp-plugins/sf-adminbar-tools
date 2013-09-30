@@ -1,11 +1,11 @@
 === SF Admin Bar Tools ===
 Contributors: GregLone
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=UBY2MY2J4YB7J&item_number=SF-Admin-Bar-Tools
 Tags: admin, admin bar, bar, query, screen, tool
 Requires at least: 3.1
-Tested up to: 3.5.1
+Tested up to: 3.7
 Stable tag: trunk
 License: GPLv3
+License URI: http://www.screenfeed.fr/gpl-v3.txt
 
 Adds some small interesting tools to the admin bar for Developers.
 
@@ -106,4 +106,3 @@ Check out [my blog post](http://www.screenfeed.fr/sf-abt2/) for more infos or ti
 == Upgrade Notice ==
 
 Nothing special
-
