@@ -1,0 +1,130 @@
+# LANGUAGE French translation for SF Admin bar tools plugin for WordPress.
+# by Grégory Viguier.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: sf-abt 2.1\n"
+"Report-Msgid-Bugs-To: http://www.screenfeed.fr/contact/\n"
+"POT-Creation-Date: 2012-06-09 15:33+0100\n"
+"PO-Revision-Date: 2013-01-26 22:04+0100\n"
+"Last-Translator: Grégory Viguier <screenfeed@gmail.com>\n"
+"Language-Team: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"Language: fr_FR\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: sf-adminbar-tools.php
+# --------------------------------------------------------
+msgid  "Adds some small interesting tools to the admin bar for developers"
+msgstr "Ajoute à la barre d'administration quelques petits outils intéressants pour les développeurs"
+
+#: sf-abt-admin-nodes.inc.php
+# --------------------------------------------------------
+msgid  "Current screen"
+msgstr "Écran actuel"
+
+msgid  "Admin init hooks"
+msgstr "Hooks à l'init."
+
+msgid  "Before headers"
+msgstr "Avant les en-têtes"
+
+msgid  "After headers"
+msgstr "Après les en-têtes"
+
+msgid  "After footer"
+msgstr "Après le pied de page"
+
+msgid  "Admin head hooks"
+msgstr "Hooks à l'en-tête"
+
+msgid  "Admin footer hooks"
+msgstr "Hooks du pied de page"
+
+msgid  "%1$s: %2$s"
+msgstr "%1$s&#160;: %2$s"
+
+msgid  "Parameter: %1$s (%2$s)"
+msgid_plural "Parameters: %1$s (%2$s)"
+msgstr[0] "Paramètre&#160;: %1$s (%2$s)"
+msgstr[1] "Paramètres&#160;: %1$s (%2$s)"
+
+#: sf-abt-admin.inc.php
+# --------------------------------------------------------
+msgid  "Autosave disabled, you can (gently) mess with this post! ;)"
+msgstr "La sauvegarde automatique est désactivée, vous pouvez mettre (gentilment) la pagaille dans ce post&#160;! ;)"
+
+msgid  "Who's gonna use this plugin?"
+msgstr "Qui va utiliser ce plugin&#160;?"
+
+msgid  "Alone in the dark?"
+msgstr "Vous vous sentez un peu seul&#160;?"
+
+msgid  "You want to use this plugin? You should ask one of those awesome people to join the dev team."
+msgstr "Vous voulez utiliser ce plugin&#160;? Vous devriez demander à l'une de ces formidables personnes de rejoindre l'équipe."
+
+msgid  "These preferences apply to you only."
+msgstr "Ces préférences ne s'appliquent qu'à vous."
+
+msgid  "Stop the coworking auto-refresh (please)."
+msgstr "Stopper le rafraichissement automatique du coworking (s'il vous plait)."
+
+msgid  "Coworking enabled or not, the plugin launch an ajax call on window focus and every %s minutes to keep the statuses updated. This can be boring if you're working in your console, so you can disable that here."
+msgstr "Coworking activé ou pas, le plugin lance des appels ajax au focus de la fenêtre et toutes les %s minutes pour garder les status à jour. Cela peut être pénible si vous travaillez dans votre console, vous pouvez désactiver ce comportement ici."
+
+msgid  "Stop posts autosave."
+msgstr "Stopper la sauvegarde automatique des posts."
+
+msgid  "When you're on a post edit screen, WordPress keeps a track of your current editing every %s seconds with ajax calls. This can be boring if you're working in your console, so you can disable that here."
+msgstr "Lorsque vous êtes sur une page d'édition d'un post, WordPress garde une trace de votre édition courante toutes les %s secondes avec des appels ajax. Cela peut être pénible si vous travaillez dans votre console, vous pouvez désactiver ce comportement ici."
+
+#: sf-abt-cowork.inc.php
+# --------------------------------------------------------
+msgid  "Theme - %s"
+msgstr "Thème - %s"
+
+msgid  "MU Plugins"
+msgstr "Extensions &#34;Must Use&#34;"
+
+msgid  "Loading..."
+msgstr "Chargement..."
+
+msgid  "Clear my list"
+msgstr "Vider ma liste"
+
+#: sf-abt.inc.php
+# --------------------------------------------------------
+msgid  "%1$s queries, %2$s s."
+msgstr "%1$s req., %2$s s."
+
+msgid  "Hide/Unhide the admin bar"
+msgstr "Cacher/Montrer la barre d'admin"
+
+msgid  "Fix/unfix admin menu"
+msgstr "Fixer/Décrocher le menu d'admin"
+
+msgid  "Show $wp_query content"
+msgstr "Montrer le contenu de $wp_query"
+
+msgid  "php mem.: %1$s/%2$sB (%3$s)"
+msgstr "mem. php&#160;: %1$s/%2$sB (%3$s)"
+
+msgid  "WP_DEBUG is %1$s, error reporting level is %2$s"
+msgstr "WP_DEBUG est %1$s, le niveau de rapport d'erreur est à %2$s"
+
+msgid  "enabled"
+msgstr "activé"
+
+msgid  "disabled"
+msgstr "désactivé"
+
+msgid  "Stop coworking"
+msgstr "Arrêter le coworking"
+
+msgid  "Coworking"
+msgstr "Coworking"
