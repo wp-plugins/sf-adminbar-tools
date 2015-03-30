@@ -1,45 +1,37 @@
-=== SF Admin Bar Tools ===
+=== Admin Bar Tools ===
 Contributors: GregLone
-Tags: admin, admin bar, bar, query, screen, tool
+Tags: admin, admin bar, bar, query, screen, tool, dev, template
 Requires at least: 3.1
-Tested up to: 3.7
+Tested up to: 4.1.1
 Stable tag: trunk
 License: GPLv3
-License URI: http://www.screenfeed.fr/gpl-v3.txt
 
 Adds some small interesting tools to the admin bar for Developers.
 
 == Description ==
 The plugin adds a new tab in your admin bar with simple but useful indications and tools.
-* Displays the number of queries in your page and the amount of time to generate the page. Click this item will retract the entire admin bar to the right. Why is it useful? Have you ever had some php notices hidden under the admin bar? You probably had, so now you understand the aim of this functionality.
-* Displays php memory usage, php memory limit, and php version. Hover this item to display WP_DEBUG state and error reporting value.
+* Displays the number of queries in your page and the amount of time to generate the page.
+* Displays php memory usage, php memory limit, and php version.
+* Display WP_DEBUG state and error reporting value.
 **In your site front-end:**
-* The php memory item: hover it to display the current template too.
-* $wp_query: click the *$wp_query* item will open a lightbox with the content of $wp_query. Click its blue title to reload the lightbox, click outside the lightbox to close it. Since version 2, works on 404 pages too.
-* Responsive admin bar: better handling for small screens.
+* List the template and all template parts used in the current page (template parts added with <code>get_template_part()</code>). Compatible with WooCommerce.
+* WP_Query: click the *$wp_query* item will open a lightbox with the content of $wp_query. Click the lightbox title to reload the value, click outside the lightbox to close it.
 **In your site administration:**
-* Fix/unfix the admin menu: not really a tool, it gives you the opportunity to float the admin menu. I mean, in long pages, your menu will remain visible on screen: no more long scroll up to navigate into your administration area.
-* Current screen: a dropdown containing lots of things.
-1. Three lists of useful hooks (actions). The indicator to the right of the line tells you if the hook has been triggered (a "x" means the plugin doesn't know, because the hook occurs after the admin bar). Colors: green -> the hook occurs before the headers are sent, orange -> after the headers, red -> in footer. A "P" means the hook has a parameter: hover it for more infos. Click a hook (on its text) to auto-select its code, for example: click *admin_init* to select *add_action( 'admin_init', '' );*
+* Current screen: a dropdown containing lots of things:
+1. Three lists of useful hooks (actions). The indicator to the right of the line tells you how many times the hook has been triggered (a "x" means the plugin doesn't know, because the hook occurs after the admin bar). A "P" means the hook has a parameter: hover it for more details. Click a hook (on its text) to auto-select its code, for example: click *admin_init* to select <code>add_action( 'admin_init', '' );</code>.
 2. $...now: this dropdown contains the value of the well-known variables $pagenow, $typenow and $taxnow.
 3. Finally, you can know the current page id and base.
 
-= New in version 2: cowork =
-If you work with a team or other developers, one of the worst thing that could happen is if two developers edit the same file at the same time.
-This is where the new Cowork functionality comes in. Once enabled (click the cowork button), you'll have a file tree listing all the files in the current theme and in the plugins directory. Click a file, it's yours, you can now go to your ftp program to edit this file. The file disappear from the file tree and appear in your personal list. For other users, the file will remain in place but it will be red and they won't be able to click it, they know now you are editing this file and they shouldn't. In the meantime in the main plugin item, you will have one or two counters: the grey one is the number of files open by you, the other is the total of files open by others.
-Counters and file tree are refreshed frequently, depending of the situation: main item hover, window focus, every 5 minutes (counters only).
-Once you finished your work, clicking on *Stop coworking* will clear your files list and stop your cowork session.
-**A little warning**: with long lists, I hope you have a big screen ;) If you have really lots of files in your theme and your plugins directory, the plugin can be slow to insert the list in the admin bar and freeze the screen for few seconds.
+You can decide who's gonna use this plugin (go to your profile page for all the settings). This way, the plugin's items won't show up to other users (your client for example).
 
-You can decide who's gonna use this plugin. First thing to do after installing the plugin is to go to settings page and check the users (only administrators). This way, the plugin's items won't show up to other users (your client for example).
+Version 3 is not tested with old versions of WordPress yet.
 
 = Translations =
 * English
 * French
 
 = Important note: browser requirement =
-You'll need a modern browser to use correctly this plugin. I used CSS3 and HTML5 features without fallback to keep it simple. Why? I think developers should use a modern browser, so why should I bother myself with fallbacks? ;) (you don't work with a dinosaur, right?)
-For example, the "retract admin bar" and "float admin menu" use localStorage to keep track of your preferences between pages.
+You'll need a modern browser to use correctly this plugin. I used some CSS3 features without fallback to keep it simple (you don't work with a dinosaur, right?).
 
 == Installation ==
 
@@ -50,18 +42,34 @@ For example, the "retract admin bar" and "float admin menu" use localStorage to 
 == Frequently Asked Questions ==
 
 None, yet.
-Check out [my blog post](http://www.screenfeed.fr/sf-abt2/) for more infos or tips (sorry guys, it's in French, but feel free to leave a comment in English if you need help).
+Check out [the plugin page on my blog](http://www.screenfeed.fr/plugin-wp/sf-admin-bar-tools/) for more infos or tips (sorry guys, it's in French, but feel free to leave a comment in English if you need help).
 
 == Screenshots ==
 
-1. The admin bar item displaying the number of queries in your page and the amount of time to generate the page.
-2. The admin bar retracted.
-3. The dropdown with coworking enabled.
-4. The admin bar in front-end on a small screen.
-5. The hooks dropdowns.
-6. Coworking: browse the files and indicate you're editing it.
+1. Admin side: list the most important hooks "before headers".
+2. Admin side: click a hook, you're ready to copy/paste.
+3. Front side: see the <code>WP_Query</code> object value.
+4. Front side: see the template and list all template parts used in the current page.
+5. By the way, WooCommerce templates are also listed.
+6. The settings in your profile page.
 
 == Changelog ==
+
+= 3.0 =
+* 2015/03/30
+* Two years without any update: it's time to rebuild everything from the ground with unicorns and kittens!
+* The main focus of this release is to repair broken things and remove obsolete features. It's a major rewrite.
+* New: in front-end, list the template and all template parts used in the current page. Compatible with WooCommerce.
+* New: if WP SEO is installed, you can remove all its columns et metaboxes (they bore me).
+* New: if WPML is installed, you will have a link to the "hidden tools" (dangerous weapons that will blow up your site if you don't know what you do (　ﾟДﾟ)＜!!).
+* Removed: the admin bar can no longer be shrinked.
+* Removed: coworking feature. Did somebody use it? It was a big mess for only this "tiny" thing.
+* Changed: the settings are in your profile page. Some of them are now user preferences.
+* Improved: more hooks listed in the admin area.
+* Improved: display the number of times the hooks are hit (for real this time).
+* Improved: hook code selection.
+* Improved: the "disable auto-save" feature now works with new WordPress releases. It also removes auto-lock, auth-check ("XXX is currently editing this post"), and all the things related to Heartbeat.
+* Todo: meh.
 
 = 2.1.1 =
 * 2013/01/26
@@ -106,3 +114,4 @@ Check out [my blog post](http://www.screenfeed.fr/sf-abt2/) for more infos or ti
 == Upgrade Notice ==
 
 Nothing special
+
