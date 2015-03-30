@@ -9,16 +9,17 @@ License: GPLv3
 Adds some small interesting tools to the admin bar for Developers.
 
 == Description ==
+
 The plugin adds a new tab in your admin bar with simple but useful indications and tools.
 
-* Displays the number of queries in your page and the amount of time to generate the page.
-* Displays php memory usage, php memory limit, and php version.
-* Display WP_DEBUG state and error reporting value.
+*  Displays the number of queries in your page and the amount of time to generate the page.
+*  Displays php memory usage, php memory limit, and php version.
+*  Display WP_DEBUG state and error reporting value.
 **In your site front-end:**
-* List the template and all template parts used in the current page (template parts added with <code>get_template_part()</code>). Compatible with WooCommerce.
-* WP_Query: click the *$wp_query* item will open a lightbox with the content of $wp_query. Click the lightbox title to reload the value, click outside the lightbox to close it.
+*  List the template and all template parts used in the current page (template parts added with <code>get_template_part()</code>). Compatible with WooCommerce.
+*  WP_Query: click the *$wp_query* item will open a lightbox with the content of $wp_query. Click the lightbox title to reload the value, click outside the lightbox to close it.
 **In your site administration:**
-* Current screen: a dropdown containing lots of things:
+*  Current screen: a dropdown containing lots of things:
 1. Three lists of useful hooks (actions). The indicator to the right of the line tells you how many times the hook has been triggered (a "x" means the plugin doesn't know, because the hook occurs after the admin bar). A "P" means the hook has a parameter: hover it for more details. Click a hook (on its text) to auto-select its code, for example: click *admin_init* to select <code>add_action( 'admin_init', '' );</code>.
 2. $...now: this dropdown contains the value of the well-known variables $pagenow, $typenow and $taxnow.
 3. Finally, you can know the current page id and base.
