@@ -10,6 +10,7 @@ Adds some small interesting tools to the admin bar for Developers.
 
 == Description ==
 The plugin adds a new tab in your admin bar with simple but useful indications and tools.
+
 * Displays the number of queries in your page and the amount of time to generate the page.
 * Displays php memory usage, php memory limit, and php version.
 * Display WP_DEBUG state and error reporting value.
