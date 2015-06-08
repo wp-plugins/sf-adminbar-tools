@@ -2,24 +2,22 @@
 Contributors: GregLone
 Tags: admin, admin bar, bar, query, screen, tool, dev, template
 Requires at least: 3.1
-Tested up to: 4.1.1
+Tested up to: 4.2.2
 Stable tag: trunk
 License: GPLv3
 
 Adds some small interesting tools to the admin bar for Developers.
 
 == Description ==
-
 The plugin adds a new tab in your admin bar with simple but useful indications and tools.
-
-*  Displays the number of queries in your page and the amount of time to generate the page.
-*  Displays php memory usage, php memory limit, and php version.
-*  Display WP_DEBUG state and error reporting value.
+* Displays the number of queries in your page and the amount of time to generate the page.
+* Displays php memory usage, php memory limit, and php version.
+* Display WP_DEBUG state and error reporting value.
 **In your site front-end:**
-*  List the template and all template parts used in the current page (template parts added with <code>get_template_part()</code>). Compatible with WooCommerce.
-*  WP_Query: click the *$wp_query* item will open a lightbox with the content of $wp_query. Click the lightbox title to reload the value, click outside the lightbox to close it.
+* List the template and all template parts used in the current page (template parts added with <code>get_template_part()</code>). Compatible with WooCommerce.
+* WP_Query: click the *$wp_query* item will open a lightbox with the content of $wp_query. Click the lightbox title to reload the value, click outside the lightbox to close it.
 **In your site administration:**
-*  Current screen: a dropdown containing lots of things:
+* Current screen: a dropdown containing lots of things:
 1. Three lists of useful hooks (actions). The indicator to the right of the line tells you how many times the hook has been triggered (a "x" means the plugin doesn't know, because the hook occurs after the admin bar). A "P" means the hook has a parameter: hover it for more details. Click a hook (on its text) to auto-select its code, for example: click *admin_init* to select <code>add_action( 'admin_init', '' );</code>.
 2. $...now: this dropdown contains the value of the well-known variables $pagenow, $typenow and $taxnow.
 3. Finally, you can know the current page id and base.
@@ -56,6 +54,12 @@ Check out [the plugin page on my blog](http://www.screenfeed.fr/plugin-wp/sf-adm
 6. The settings in your profile page.
 
 == Changelog ==
+
+= 3.0.1 =
+* 2015/06/08
+* Bugfix: avoid php notices when no template parts are found.
+* Improvement: the "Hide WP SEO" checkbox also removes the fields in taxonomy screens now.
+* Removed all unused old files. SVN, I hate you so much.
 
 = 3.0 =
 * 2015/03/30
@@ -116,4 +120,3 @@ Check out [the plugin page on my blog](http://www.screenfeed.fr/plugin-wp/sf-adm
 == Upgrade Notice ==
 
 Nothing special
-

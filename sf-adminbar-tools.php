@@ -3,7 +3,7 @@
  * Plugin Name: SF Admin bar tools
  * Plugin URI: http://www.screenfeed.fr/sf-abt/
  * Description: Adds some small interesting tools to the admin bar for developers.
- * Version: 3.0
+ * Version: 3.0.1
  * Author: Grégory Viguier
  * Author URI: http://www.screenfeed.fr/greg/
  * License: GPLv3
@@ -22,7 +22,7 @@ if ( version_compare( $GLOBALS['wp_version'], '3.1', '<' ) ) {
 }
 
 
-define( 'SFABT_VERSION',         '3.0' );
+define( 'SFABT_VERSION',         '3.0.1' );
 define( 'SFABT_FILE',            __FILE__ );
 define( 'SFABT_PLUGIN_URL',      plugin_dir_url( SFABT_FILE ) );
 define( 'SFABT_PLUGIN_DIR',      plugin_dir_path( SFABT_FILE ) );

@@ -153,13 +153,13 @@ function sfabt_dont_set_post_lock( $check, $object_id, $meta_key, $meta_value, $
 
 
 /*------------------------------------------------------------------------------------------------*/
-/* !WP SEO GO TO HELL =========================================================================== */
+/* !WP SEO, GO TO HELL! ========================================================================= */
 /*------------------------------------------------------------------------------------------------*/
 
 add_action( 'init', 'sfabt_maybe_remove_wpseo_admin_stuff' );
 
 function sfabt_maybe_remove_wpseo_admin_stuff() {
-	global $wpseo_metabox;
+	global $wpseo_metabox, $pagenow;
 
 	if ( ! defined( 'WPSEO_VERSION' ) || ! get_user_meta( get_current_user_id(), 'sf-abt-no-wpseo', true ) ) {
 		return;
@@ -169,13 +169,42 @@ function sfabt_maybe_remove_wpseo_admin_stuff() {
 	add_filter( 'wpseo_use_page_analysis', '__return_false' );
 
 	// Metaboxes
-	remove_action( 'add_meta_boxes', array( $wpseo_metabox, 'add_meta_box' ) );
-	remove_action( 'admin_enqueue_scripts', array( $wpseo_metabox, 'enqueue' ) );
-	remove_action( 'wp_insert_post', array( $wpseo_metabox, 'save_postdata' ) );
-	remove_action( 'edit_attachment', array( $wpseo_metabox, 'save_postdata' ) );
-	remove_action( 'add_attachment', array( $wpseo_metabox, 'save_postdata' ) );
-	remove_action( 'admin_init', array( $wpseo_metabox, 'setup_page_analysis' ) );
-	remove_action( 'admin_init', array( $wpseo_metabox, 'translate_meta_boxes' ) );
+	remove_action( 'add_meta_boxes',        array( $wpseo_metabox, 'add_meta_box' )         );
+	remove_action( 'admin_enqueue_scripts', array( $wpseo_metabox, 'enqueue' )              );
+	remove_action( 'wp_insert_post',        array( $wpseo_metabox, 'save_postdata' )        );
+	remove_action( 'edit_attachment',       array( $wpseo_metabox, 'save_postdata' )        );
+	remove_action( 'add_attachment',        array( $wpseo_metabox, 'save_postdata' )        );
+	remove_action( 'admin_init',            array( $wpseo_metabox, 'setup_page_analysis' )  );
+	remove_action( 'admin_init',            array( $wpseo_metabox, 'translate_meta_boxes' ) );
+
+	// Terms
+	if ( $pagenow === 'edit-tags.php' ) {
+		add_action( 'load-edit-tags.php', 'sfabt_remove_wpseo_term_fields' );
+	}
+}
+
+
+function sfabt_remove_wpseo_term_fields() {
+	global $taxnow, $wp_filter;
+
+	// Thank you Yoast for the anonymous class objects è_é
+	if ( $taxnow && ! empty( $wp_filter[ $taxnow . '_edit_form' ][90] ) ) {
+		foreach ( $wp_filter[ $taxnow . '_edit_form' ][90] as $atts ) {
+			if ( is_array( $atts['function'] ) && $atts['function'][1] === 'term_seo_form' && is_object( $atts['function'][0] ) && get_class( $atts['function'][0] ) === 'WPSEO_Taxonomy' ) {
+				remove_action( $taxnow . '_edit_form', $atts['function'], 90 );
+				break;
+			}
+		}
+	}
+
+	if ( ! empty( $wp_filter['edit_term'][99] ) ) {
+		foreach ( $wp_filter['edit_term'][99] as $atts ) {
+			if ( is_array( $atts['function'] ) && $atts['function'][1] === 'update_term' && is_object( $atts['function'][0] ) && get_class( $atts['function'][0] ) === 'WPSEO_Taxonomy' ) {
+				remove_action( 'edit_term', $atts['function'], 99 );
+				break;
+			}
+		}
+	}
 }
 
 /**/

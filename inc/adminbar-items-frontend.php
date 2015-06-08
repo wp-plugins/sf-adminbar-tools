@@ -47,7 +47,8 @@ function sfabt_add_frontend_nodes_after( $wp_admin_bar ) {
 			),
 		) );
 
-		$all_located = array_values( array_filter( sf_cache_data( 'sfabt_template_parts' ) ) );
+		$all_located = sf_cache_data( 'sfabt_template_parts' );
+		$all_located = $all_located ? array_values( array_filter( $all_located ) ) : false;
 
 		if ( ! empty( $all_located ) ) {
 			$i          = 0;
